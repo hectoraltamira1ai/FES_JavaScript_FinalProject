@@ -1,87 +1,115 @@
-/*
-Variable Declarations
-main one, 'moviesContainer' , 
-This line selects the HTML element with the ID movies and assigns it to the constant moviesContainer. 
-This element is where the movie data will be displayed on the webpage.
-*/
+document.addEventListener("DOMContentLoaded", () => {
+    const apiKey = "20536129";  // Ensure this is a valid OMDb API key
+    const moviesContainer = document.getElementById("movies");
+    const loadMoreButton = document.getElementById("loadMore");
+    const returnToTopButton = document.getElementById("returnToTop");
+    const titleFilterInput = document.getElementById("titleFilter");
+    const yearFilterInput = document.getElementById("yearFilter");
+    const searchButton = document.getElementById("searchButton");
+    const resetButton = document.getElementById("resetButton");
+    const popup = document.getElementById("popup");
+    const popupMessage = document.getElementById("popupMessage");
+    const clearPopupButton = document.getElementById("clearPopupButton");
+    let currentPage = 1;
+    let currentTitle = "";
+    let currentYear = "2024";
 
+    async function fetchMovies(title = "", year = "", page = 1) {
+        try {
+            let searchTerm = title || "movie";  // Use a generic term like "movie" if no title is provided
+            let url = `https://www.omdbapi.com/?apikey=${apiKey}&s=${encodeURIComponent(searchTerm)}&type=movie&page=${page}`;
+            if (year) url += `&y=${encodeURIComponent(year)}`;
 
-const apiKey = '20536129';
-const moviesContainer = document.getElementById('movies');
-const loadMoreButton = document.getElementById('loadMore');
-const sortOrderSelect = document.getElementById('sortOrder');
-const returnToTopButton = document.getElementById('returnToTop');
-let currentPage = 1;
-let moviesList = [];
+            console.log("Constructed URL:", url);
 
-/*
-Function Definitions
-async fuction fetchLatestMovies
-makes an api resquest to OMDb via an await fetch
-The return data is captured in data via the await response.jon
-try - catch - is for error handling
-moviesContainer.innerHTML will display the error if any
------
-Function displayMovies(movies)
-This function takes either 'asc' or 'desc' and sort the 
-gathered movies in that particular order
-Afterward, it uses the map function to map over the template `html template`
-note the .join(''), this is to join and display all the fetched movies
+            const response = await fetch(url);
+            const data = await response.json();
 
-*/
+            console.log("API Response:", data);
 
-async function fetchLatestMovies(page = 1) {
-    try {
-        const response = await fetch(`https://www.omdbapi.com/?apikey=${apiKey}&s=all&type=movie&page=${page}`);
-        const data = await response.json();
+            if (data.Response === "True") {
+                if (page === 1) {
+                    moviesContainer.innerHTML = "";  // Clear previous results on new search
+                }
+                displayMovies(data.Search);
 
-        if (data.Response === 'True') {
-            moviesList = [...moviesList, ...data.Search];
-            displayMovies(moviesList);
-        } else {
-            moviesContainer.innerHTML = `<p>${data.Error}</p>`;
+                // Hide the load more button if there are no more results
+                if (data.Search.length < 10) {  // Assuming 10 results per page
+                    loadMoreButton.style.display = "none";
+                } else {
+                    loadMoreButton.style.display = "block";
+                }
+            } else {
+                if (page === 1) {
+                    moviesContainer.innerHTML = `<p>${data.Error}</p>`;
+                }
+                showPopup(data.Error);
+                loadMoreButton.style.display = "none";  // Hide button if no results
+            }
+        } catch (error) {
+            moviesContainer.innerHTML = `<p>Error fetching movies: ${error.message}</p>`;
+            showPopup(`Error fetching movies: ${error.message}`);
+            loadMoreButton.style.display = "none";  // Hide button on error
         }
-    } catch (error) {
-        moviesContainer.innerHTML = `<p>Error fetching movies: ${error.message}</p>`;
     }
-}
 
-function displayMovies(movies) {
-    const sortOrder = sortOrderSelect.value;
-    const sortedMovies = movies.sort((a, b) => sortOrder === 'asc' ? a.Year - b.Year : b.Year - a.Year);
+    function displayMovies(movies) {
+        const movieCards = movies.map(movie => `
+            <div class="movie">
+                <img src="${movie.Poster}" alt="${movie.Title} poster" />
+                <h3>${movie.Title}</h3>
+                <h4>(${movie.Year})</h4>
+            </div>
+        `).join("");
 
-    const movieCards = sortedMovies.map(movie => `
-        <div class="movie">
-            <img src="${movie.Poster}" alt="${movie.Title} poster" />
-            <h3>${movie.Title}</h3>
-            <h4>(${movie.Year})</h4>
-        </div>
-    `).join('');
-
-    moviesContainer.innerHTML = movieCards;
-}
-
-loadMoreButton.addEventListener('click', () => {
-    currentPage++;
-    fetchLatestMovies(currentPage);
-});
-
-sortOrderSelect.addEventListener('change', () => {
-    displayMovies(moviesList);
-});
-
-fetchLatestMovies();
-
-function scrollToTop() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-window.onscroll = function() {
-    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-        returnToTopButton.style.display = "block";
-    } else {
-        returnToTopButton.style.display = "none";
+        moviesContainer.innerHTML += movieCards;  // Append new results
     }
-};
 
-returnToTopButton.addEventListener('click', scrollToTop);
+    function showPopup(message) {
+        popupMessage.textContent = message;
+        popup.style.display = "block";
+    }
+
+    searchButton.addEventListener("click", () => {
+        currentTitle = titleFilterInput.value.trim();
+        currentYear = yearFilterInput.value.trim();
+        currentPage = 1;
+
+        fetchMovies(currentTitle, currentYear, currentPage);
+    });
+
+    resetButton.addEventListener("click", () => {
+        titleFilterInput.value = "";
+        yearFilterInput.value = "";
+        currentTitle = "";
+        currentYear = "";
+        currentPage = 1;
+        moviesContainer.innerHTML = ""; // Clear the movie display
+        loadMoreButton.style.display = "none";  // Hide button on reset
+    });
+
+    clearPopupButton.addEventListener("click", () => {
+        popup.style.display = "none";
+    });
+
+    loadMoreButton.addEventListener("click", () => {
+        currentPage++;
+        fetchMovies(currentTitle, currentYear, currentPage);
+    });
+
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    window.onscroll = function () {
+        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+            returnToTopButton.style.display = "block";
+        } else {
+            returnToTopButton.style.display = "none";
+        }
+    };
+
+    returnToTopButton.addEventListener("click", scrollToTop);
+    /* On stat-up this is the default current year movies */
+    fetchMovies(title = "", year = "2024", page = 1)
+});

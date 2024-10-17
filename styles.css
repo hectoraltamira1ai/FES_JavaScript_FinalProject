@@ -34,10 +34,7 @@ body {
   align-items: center;
   border-bottom-left-radius: 14px;
   border-bottom-right-radius: 14px;
-  padding-bottom: 10px;
-  padding-top: 10px;
-  padding-left: 16px;
-  padding-right: 16px;
+  padding: 10px 16px;
   z-index: 5;
   color: white;
 }
@@ -57,23 +54,11 @@ body {
   letter-spacing: 2px;
 }
 
-.sort-container {
-  margin-left: auto;
-}
-
-.sort-order {
-  padding: 10px;
-  border-radius: 14px;
-  border: 1px solid #ccc;
-  font-size: 16px;
-  margin-right: 10px;
-}
-
 .movies-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 20px;
-  margin-top: 20px; /* Adjustment for fixed header */
+  margin-top: 80px; /* Adjustment for fixed header */
   margin-bottom: 20px;
 }
 
@@ -131,38 +116,81 @@ body {
   background-color: #0056b3;
 }
 
+.filter-container {
+  margin-left: auto;
+  display: flex;
+  gap: 10px;
+}
+
+.filter-input {
+  padding: 10px;
+  border-radius: 14px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.filter-button {
+  padding: 10px;
+  border-radius: 14px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.filter-button:hover {
+  background-color: #0056b3;
+}
+
+#popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+}
+
+#popupMessage {
+  margin-bottom: 10px;
+}
+
+#clearPopupButton {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#clearPopupButton:hover {
+  background-color: #0056b3;
+}
+
 /* Responsive Styles */
 @media (max-width: 768px) {
   .movies-container {
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
-
+  
   .load-more {
-      width: 100%;
+    width: 100%;
   }
 }
 
 @media (max-width: 600px) {
   .header {
-      flex-direction: column;
-      align-items: flex-start;
+    flex-direction: column;
+    align-items: flex-start;
   }
-
-  .sort-container {
-      margin-left: 0;
-      width: 100%;
-      text-align: right;
-  }
-
+  
   .return-to-top {
-      width: 40px;
-      height: 40px;
-      font-size: 18px;
-  }
-}
-
-@media (max-width: 480px) {
-  .sort-order {
-      font-size: 14px;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
   }
 }
