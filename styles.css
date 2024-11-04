@@ -1,6 +1,6 @@
 body {
   font-family: Roboto, sans-serif;
-  background-image: url('images/background.jpg');
+  background-image: url("images/background.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -22,8 +22,8 @@ body {
 .header {
   position: sticky;
   top: 0;
-  width: 100%;
-  background-color: rgba(0, 0, 0, 1.0);
+  width: auto;
+  background-color: rgba(0, 0, 0, 1);
   z-index: 10;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -32,10 +32,11 @@ body {
   padding: 10px 16px;
   color: #fff;
   flex-wrap: wrap;
+  border-radius: 8px;
 }
 
 .logo img {
-  border-radius: 50px;
+  border-radius: 50%;
 }
 
 .title {
@@ -44,9 +45,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  letter-spacing: 0.10rem;
-  font-size: 1.5rem;
-  margin: 0;
+  letter-spacing: 0.1rem;
+  font-size: clamp(1.2rem, 4vw, 3rem);
   min-width: 150px;
 }
 
@@ -57,33 +57,41 @@ body {
   justify-content: center;
   margin-top: 20px;
   margin-bottom: 20px;
+  padding: 0 20px; /* Add padding to the container */
 }
 
 .movie {
-  flex: 1 1 calc(16% - 10px); /* 6 items per row */
-  max-width: calc(100% - 10px);
+  flex: 1 1 calc(14% - 20px); /* Adjusted width for larger screens */
+  max-width: calc(14% - 20px);
   padding: 10px;
+  margin: 10px;
   border: 2px solid black;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
   border-radius: 14px;
   text-align: center;
   background-color: mediumblue;
   overflow: hidden;
+  transition: all 0.3s ease;
+  max-height: 400px; /* Set a maximum height for consistency */
+}
+
+.movie:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
 }
 
 .movie img {
   max-width: 100%;
-  height: 275px;
+  height: auto;
+  object-fit: cover; /* Ensures the image covers the area without stretching */
+  max-height: 200px; /* Set a maximum height for images */
   transition: transform 0.3s ease;
 }
 
-.movie img:hover {
-  transform: scale(1.1);
-}
-
-.load-more {
+.load-more,
+.return-to-top {
   display: block;
-  margin: 0 auto;
+  margin: 20px auto;
   padding: 10px 20px;
   background-color: #007bff;
   color: white;
@@ -92,9 +100,11 @@ body {
   cursor: pointer;
   border: 2px solid black;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+  transition: background-color 0.3s ease;
 }
 
-.load-more:hover {
+.load-more:hover,
+.return-to-top:hover {
   background-color: #0056b3;
 }
 
@@ -104,38 +114,30 @@ body {
   right: 20px;
   width: 50px;
   height: 50px;
-  background-color: #007bff;
-  color: white;
-  border: none;
   border-radius: 50%;
   font-size: 20px;
-  cursor: pointer;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
   display: none;
-}
-
-.return-to-top:hover {
-  background-color: #0056b3;
 }
 
 .filter-container {
   display: flex;
+  flex-direction: column;
   gap: 10px;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
 }
 
 .filter-input {
   padding: 8px;
   border-radius: 14px;
-  font-size: .75rem;
+  font-size: 0.75rem;
   min-width: 50px;
   flex: 1;
 }
 
 .filter-button {
   padding: 8px 12px;
-  font-size: .75rem;
+  font-size: 0.75rem;
   border-radius: 14px;
   background-color: #007bff;
   color: white;
@@ -178,303 +180,88 @@ body {
   background-color: #0056b3;
 }
 
-/* Responsive Styles for 1024px */
+.movie h3 {
+  font-size: 1.2rem; /* Adjust the font size for the movie title */
+  margin: 10px 0 5px; /* Add some margin for spacing */
+  color: #fff; /* Ensure the text color is readable */
+}
+
+.movie h4 {
+  font-size: 1rem; /* Adjust the font size for the movie year */
+  margin: 0; /* Remove margin for a tighter layout */
+  color: #ccc; /* Use a lighter color for the year */
+}
+
+/* Responsive Styles */
 @media (max-width: 1024px) {
-  .movies-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center; /* Center items horizontally */
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
-  
   .movie {
-    flex: 1 1 calc(30% - 10px); /* 6 items per row */
-    max-width: calc(30% - 10px);
-    padding: 10px;
-    border: 2px solid black;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
-    border-radius: 14px;
-    text-align: center;
-    background-color: mediumblue;
-    overflow: hidden;
+    flex: 1 1 calc(22% - 20px);
+    max-width: calc(22% - 20px);
+    max-height: 350px; /* Adjust max-height for smaller screens */
   }
-  
-  .movie img {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 1 / 1; /* Ensures a 1:1 aspect ratio */
-    transition: transform 0.3s ease;
-  }
-  
-  .movie img:hover {
-    transform: scale(1.1);
-  }
-  .header {
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
+  .movie h3 {
+      font-size: 1.1rem; /* Slightly smaller font size for medium screens */
+    }
+
+  .movie h4 {
+      font-size: 0.9rem; /* Slightly smaller font size for medium screens */
+    }
   }
 
-  .filter-container {
-    width: 100%;
-    justify-content: center;
-  }
 
-  .filter-input,
-  .filter-button {
-    width: 15%;
-    margin-bottom: 10px;
-  }
-
-  .title {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-  }
-
-}
-
-/* Responsive Styles for 900px */
-@media (max-width: 900px) {
-  .movies-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center; /* Center items horizontally */
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
-  
-  .movie {
-    flex: 1 1 calc(40% - 10px); /* 6 items per row */
-    max-width: calc(40% - 10px);
-    padding: 10px;
-    border: 2px solid black;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
-    border-radius: 14px;
-    text-align: center;
-    background-color: mediumblue;
-    overflow: hidden;
-  }
-  
-  .movie img {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 1 / 1; /* Ensures a 1:1 aspect ratio */
-    transition: transform 0.3s ease;
-  }
-  
-  .movie img:hover {
-    transform: scale(1.1);
-  }
-  .header {
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
-  }
-
-  .filter-container {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .filter-input,
-  .filter-button {
-    width: 15%;
-    margin-bottom: 10px;
-  }
-
-  .title {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-  }
-
-  
-}
-
-/* Responsive Styles for 768px */
 @media (max-width: 768px) {
-  .movies-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center; /* Center items horizontally */
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
-  
   .movie {
-    flex: 1 1 calc(40% - 10px); /* 6 items per row */
-    max-width: calc(40% - 10px);
-    padding: 10px;
-    border: 2px solid black;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
-    border-radius: 14px;
-    text-align: center;
-    background-color: mediumblue;
-    overflow: hidden;
+    flex: 1 1 calc(45% - 20px);
+    max-width: calc(45% - 20px);
+    max-height: 300px; /* Further adjust max-height */
   }
-  
-  .movie img {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 1 / 1; /* Ensures a 1:1 aspect ratio */
-    transition: transform 0.3s ease;
-  }
-  
-  .movie img:hover {
-    transform: scale(1.1);
-  }
-  
-
-  .header {
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
+  .movie h3 {
+      font-size: 1rem; /* Further reduce font size for smaller screens */
   }
 
-  .filter-container {
-    width: 100%;
-    justify-content: center;
+  .movie h4 {
+      font-size: 0.8rem; /* Further reduce font size for smaller screens */
   }
 
   .filter-input,
   .filter-button {
-    width: 15%;
-    margin-bottom: 10px;
-    justify-content: center;
-  }
-
-  .title {
-    font-size: 1.5rem;
-    margin-top: 10px;
-  }
-
-  .load-more {
-    width: 100%;
-  }
-}
-
-/* Responsive Styles for 600px */
-@media (max-width: 600px) {
-
-  .movies-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center; /* Center items horizontally */
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
-  
-  .movie {
-    flex: 1 1 calc(40% - 10px); /* 2 items per row */
-    max-width: calc(40% - 10px);
     padding: 10px;
-    border: 2px solid black;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
-    border-radius: 14px;
-    text-align: center;
-    background-color: mediumblue;
-    overflow: hidden;
+    flex: 1;
   }
-  
-  .movie img {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 1 / 1; /* Ensures a 1:1 aspect ratio */
-    transition: transform 0.3s ease;
-  }
-  
-  .movie img:hover {
-    transform: scale(1.1);
-  }
-  
-  .header {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .filter-container {
-    flex-direction: column;
-    width: 100%;
-    align-items: center;
-  }
-
-  .filter-input,
-  .filter-button {
-    width: 50%;
-    margin-bottom: 10px;
-  }
-
-  .title {
-    font-size: 1.5rem;
-    margin-top: 10px;
-  }
-
-  .return-to-top {
-    width: 40px;
-    height: 40px;
-    font-size: 18px;
+  .logo {
+    display: none;
   }
 }
 
-/* Responsive Styles for 480px */
 @media (max-width: 480px) {
-
-  .movies-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center; /* Center items horizontally */
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
-  
   .movie {
-    flex: 1 1 100%; /* Full-width for single item per row */
-    max-width: 100%;
-    padding: 10px;
-    border: 2px solid black;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
-    border-radius: 14px;
-    text-align: center;
-    background-color: mediumblue;
-    overflow: hidden;
+    flex: 1 1 calc(90% - 20px);
+    max-width: calc(90% - 20px);
+    max-height: 250px; /* Further adjust max-height */
   }
-  
-  .movie img {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 1 / 1; /* Ensures a 1:1 aspect ratio */
-    transition: transform 0.3s ease;
-  }
-  
-  .movie img:hover {
-    transform: scale(1.1);
-  }
-  
-  
-  .header {
-    flex-direction: column;
-    align-items: center;
+  .movie h3 {
+    font-size: 0.9rem; /* Further reduce font size for very small screens */
   }
 
-  .filter-container {
-    flex-direction: column;
-    width: 100%;
-    align-items: center;
+  .movie h4 {
+    font-size: 0.7rem; /* Further reduce font size for very small screens */
   }
 
   .filter-input,
   .filter-button {
-    width: 50%;
-    margin-bottom: 10px;
+    padding: 10px;
+    flex: 1;
   }
-
-  .title {
-    font-size: 1.5rem;
-    margin-top: 10px;
+  .logo {
+    display: none;
   }
 }
+
+@media (max-width: 320px) {
+  .filter-input,
+  .filter-button {
+    padding: 10px;
+    flex: 1;
+  }
+}
+
