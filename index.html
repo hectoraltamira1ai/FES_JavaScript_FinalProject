@@ -28,6 +28,19 @@
         <button id="loadMore" class="load-more">Load More</button>
         <button id="returnToTop" class="return-to-top">↑</button>
 
+        <!-- Modal for movie details -->
+<div id="movieModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <div id="movieDetails">
+            <!-- Movie details will be dynamically inserted here -->
+        </div>
+    </div>
+</div>
+
+<!-- Loading spinner -->
+<div id="loadingSpinner" class="spinner" style="display: none;"></div>
+
         <!-- Popup for error messages -->
         <div id="popup" style="display: none;">
             <span id="popupMessage"></span>
